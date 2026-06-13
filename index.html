@@ -35,6 +35,58 @@ body{
 }
 
 input{
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background: #020617;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+/* التأثير عند التركيز على أي input */
+input:focus{
+  outline: none;
+
+  border: 2px solid;
+  border-image: linear-gradient(
+    90deg,
+    #d4af37,
+    #ffd700,
+    #d4af37
+  ) 1;
+
+  animation: borderMove 1.5s linear infinite;
+}
+
+/* حركة خفيفة للإطار */
+@keyframes borderMove{
+  0%{
+    border-image-source: linear-gradient(90deg,#d4af37,#ffd700,#d4af37);
+  }
+  50%{
+    border-image-source: linear-gradient(180deg,#ffd700,#d4af37,#ffd700);
+  }
+  100%{
+    border-image-source: linear-gradient(270deg,#d4af37,#ffd700,#d4af37);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+input
+  
   width:100%;
   padding:13px;
   margin-bottom:10px;
@@ -44,7 +96,7 @@ input{
   color:#fff;
   text-align:center;
   font-size:16px;
-}
+
 
 button{
   width:100%;
