@@ -395,7 +395,17 @@
 
 
 
-      const report = `
+      async function shareResults() {
+
+  // تأكد أن التحليل تم
+  if (financedEl.textContent === '0') {
+    alert('قم بتحليل القرض أولاً');
+    return;
+  }
+
+  const status = alertBox.textContent.trim();
+
+  const report = `
 🏡 تقرير التمويل العقاري
 
 🏠 قيمة العقار: ${loan.value} ريال
@@ -416,7 +426,66 @@ ${status}
 ━━━━━━━━━━━━
 المستشار المالي الذكي
 `.trim();
-</script>
+
+  const btn = document.querySelector('.shareBtn');
+  const oldHTML = btn.innerHTML;
+
+  try {
+
+    // مشاركة مباشرة (الأفضل للجوال)
+    if (navigator.share) {
+
+      await navigator.share({
+        title: 'تقرير التمويل العقاري',
+        text: report
+      });
+
+      return;
+    }
+
+  } catch (err) {
+    console.log('share failed:', err);
+  }
+
+  // fallback النسخ للحافظة
+  try {
+
+    await navigator.clipboard.writeText(report);
+
+    btn.innerHTML = '✅ تم نسخ التقرير';
+
+    setTimeout(() => {
+      btn.innerHTML = oldHTML;
+    }, 2000);
+
+  } catch (e) {
+
+    // fallback أخير للأجهزة القديمة
+    const textarea = document.createElement('textarea');
+    textarea.value = report;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+      document.execCommand('copy');
+
+      btn.innerHTML = '✅ تم نسخ التقرير';
+
+      setTimeout(() => {
+        btn.innerHTML = oldHTML;
+      }, 2000);
+
+    } catch (err) {
+      alert('المشاركة غير مدعومة في هذا الجهاز');
+    }
+
+    document.body.removeChild(textarea);
+  }
+}
 
 
 </body>
