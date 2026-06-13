@@ -61,8 +61,6 @@ input:focus{
   100% { border-color: #ffd700; }
 }
 
-
-
 input{
   
   width:100%;
@@ -198,12 +196,12 @@ button{
   <!-- الإدخال -->
   <div class="card">
 
-    <input id="loan" placeholder="مبلغ العقار" inputmode="numeric" />
-   <input id="down" placeholder="الدفعة + الدعم السكني" inputmode="numeric" />
-   <input id="salary" placeholder="الراتب الشهري" inputmode="numeric" />
-   <input id="expenses" placeholder="الالتزامات" inputmode="numeric" />
-   <input id="months" placeholder="مدة التمويل بالأشهر" inputmode="numeric" />
-   <input id="rate" placeholder="نسبة الفائدة (5.5 أو 5,5)" inputmode="decimal" />
+    <input id="loan" placeholder="مبلغ العقار" />
+    <input id="down" placeholder="الدفعة + الدعم السكني" />
+    <input id="salary" placeholder="الراتب الشهري" />
+    <input id="expenses" placeholder="الالتزامات" />
+    <input id="months" placeholder="مدة التمويل بالأشهر" />
+    <input id="rate" placeholder="نسبة الفائدة (5.5 أو 5,5)" />
 
     <button class="run" onclick="calc()">
       تحليل القرض
@@ -328,52 +326,7 @@ function calc(){
   const E=parseMoney(expenses.value);
   const M=parseMoney(months.value);
   const R=parseRate(rate.value)/100;
-  localStorage.setItem('bankInputs', JSON.stringify({
-  loan:loan.value,
-  down:down.value,
-  salary:salary.value,
-  expenses:expenses.value,
-  months:months.value,
-  rate:rate.value
-}));
 
-  if(D > L){
-
-  alertBox.className='alert bad';
-
-  alertBox.textContent=
-  '❌ الدفعة أكبر من مبلغ العقار';
-
-  hintBox.innerHTML='';
-
-  return;
-}
-
-if(M <= 0){
-
-  if(S <= 0){
-
-  alertBox.className='alert bad';
-
-  alertBox.textContent=
-  '❌ الراتب غير صحيح';
-
-  hintBox.innerHTML='';
-
-  return;
-}
-
-  alertBox.className='alert bad';
-
-  alertBox.textContent=
-  '❌ مدة التمويل غير صحيحة';
-
-  hintBox.innerHTML='';
-
-  return;
-}
-
-  
   const financed=L-D;
   const interest=financed*R*(M/12);
   const total=financed+interest;
@@ -387,10 +340,6 @@ if(M <= 0){
   interestEl.textContent=fmt(interest);
   totalEl.textContent=fmt(total);
   remainingEl.textContent=fmt(remaining);
-  remainingEl.style.color =
-remaining < 0
-? '#ef4444'
-: '#22c55e';
   percentEl.textContent=fmt(percent)+'%';
 
   if(M>0){
@@ -401,7 +350,7 @@ remaining < 0
 
     const formatter=
     new Intl.DateTimeFormat(
-      'ar-SA-u-ca-islamic'
+      'en-u-ca-islamic',
       {
         year:'numeric',
         month:'2-digit',
@@ -596,12 +545,6 @@ ${alertBox.textContent}
   }
 }
 
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter'){
-    calc();
-  }
-});
-  
 /* العناصر */
 const financedEl=$('financed');
 const monthlyEl=$('monthly');
@@ -613,22 +556,6 @@ const endDate=$('endDate');
 const alertBox=$('alertBox');
 const hintBox=$('hintBox');
 const meterBar=$('meterBar');
-
-  window.addEventListener('load', () => {
-
-  const saved = localStorage.getItem('bankInputs');
-
-  if(!saved) return;
-
-  const data = JSON.parse(saved);
-
-  loan.value = data.loan || '';
-  down.value = data.down || '';
-  salary.value = data.salary || '';
-  expenses.value = data.expenses || '';
-  months.value = data.months || '';
-  rate.value = data.rate || '';
-});
 </script>
 
 </body>
