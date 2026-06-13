@@ -39,44 +39,27 @@ input{
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 10px;
-  border: 2px solid transparent;
+  border: 2px solid #334155;
   background: #020617;
   color: #fff;
   text-align: center;
   font-size: 16px;
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
-/* التأثير عند التركيز على أي input */
+/* إطار ذهبي متحرك بسيط عند التركيز */
 input:focus{
   outline: none;
-
-  border: 2px solid;
-  border-image: linear-gradient(
-    90deg,
-    #d4af37,
-    #ffd700,
-    #d4af37
-  ) 1;
-
-  animation: borderMove 1.5s linear infinite;
+  border-color: #ffd700;
+  animation: glowMove 1.5s linear infinite;
 }
 
 /* حركة خفيفة للإطار */
-@keyframes borderMove{
-  0%{
-    border-image-source: linear-gradient(90deg,#d4af37,#ffd700,#d4af37);
-  }
-  50%{
-    border-image-source: linear-gradient(180deg,#ffd700,#d4af37,#ffd700);
-  }
-  100%{
-    border-image-source: linear-gradient(270deg,#d4af37,#ffd700,#d4af37);
-  }
+@keyframes glowMove{
+  0%   { border-color: #ffd700; }
+  50%  { border-color: #d4af37; }
+  100% { border-color: #ffd700; }
 }
-
-
-
 
 
 
