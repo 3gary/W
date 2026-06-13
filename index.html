@@ -165,7 +165,13 @@
     <button class="run" onclick="calc()">
       تحليل القرض
     </button>
+    
+    <button class="run" onclick="shareInputs()">
+  مشاركة النتائج
+</button>
+    
   </div>
+  
 
   <div class="card">
     <div class="meter">
@@ -382,7 +388,41 @@
   const alertBox=$('alertBox');
   const hintBox=$('hintBox');
   const meterBar=$('meterBar');
+
+
+
+async function shareInputs() {
+  const data = `
+🏡 بيانات التمويل العقاري
+
+💰 مبلغ العقار: ${loan.value}
+📉 الدفعة + الدعم السكني: ${down.value}
+💵 الراتب الشهري: ${salary.value}
+📌 الالتزامات: ${expenses.value}
+📆 مدة التمويل: ${months.value} شهر
+📊 نسبة الفائدة: ${rate.value}%
+
+------------------------
+📍 تم الإرسال من المستشار المالي الذكي
+  `.trim();
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: 'بيانات التمويل العقاري',
+        text: data
+      });
+    } else {
+      await navigator.clipboard.writeText(data);
+      alert('تم نسخ البيانات، جهازك لا يدعم المشاركة المباشرة');
+    }
+  } catch (err) {
+    console.log('فشل المشاركة', err);
+  }
+}
+
 </script>
+
 
 </body>
 </html>
