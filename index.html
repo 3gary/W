@@ -395,26 +395,17 @@
 
 
 
-      async function shareResults() {
-
-  // تحقق من وجود نتائج أولاً
-  if (
-    financedEl.textContent === '0' ||
-    monthlyEl.textContent === '0'
-  ) {
-    alert('قم بتحليل القرض أولاً');
-    return;
-  }
-
-  const status = alertBox.textContent.trim();
-
-  const report = `
+      const report = `
 🏡 تقرير التمويل العقاري
 
-💰 التمويل: ${financedEl.textContent} ريال
+🏠 قيمة العقار: ${loan.value} ريال
+💵 الدفعة + الدعم السكني: ${down.value} ريال
+💰 مبلغ التمويل: ${financedEl.textContent} ريال
+
 📆 القسط الشهري: ${monthlyEl.textContent} ريال
 📈 الفائدة: ${interestEl.textContent} ريال
 💵 إجمالي السداد: ${totalEl.textContent} ريال
+
 💳 المتبقي من الراتب: ${remainingEl.textContent} ريال
 📊 نسبة الاستقطاع: ${percentEl.textContent}
 🗓 نهاية القسط (هجري): ${endDate.textContent}
@@ -424,59 +415,7 @@ ${status}
 
 ━━━━━━━━━━━━
 المستشار المالي الذكي
-  `.trim();
-
-  const btn = document.querySelector('.shareBtn');
-  const oldHTML = btn.innerHTML;
-
-  try {
-
-    // إذا الجهاز يدعم المشاركة
-    if (navigator.share && navigator.canShare) {
-
-      await navigator.share({
-        title: 'تقرير التمويل العقاري',
-        text: report
-      });
-
-    } else {
-
-      // fallback نسخ للحافظة
-      await navigator.clipboard.writeText(report);
-
-      btn.innerHTML = '✅ تم نسخ التقرير';
-      btn.style.opacity = '.85';
-
-      setTimeout(() => {
-        btn.innerHTML = oldHTML;
-        btn.style.opacity = '1';
-      }, 2000);
-
-    }
-
-  } catch (err) {
-
-    // fallback إضافي
-    try {
-      const textarea = document.createElement('textarea');
-      textarea.value = report;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-
-      btn.innerHTML = '✅ تم نسخ التقرير';
-
-      setTimeout(() => {
-        btn.innerHTML = oldHTML;
-      }, 2000);
-
-    } catch (e) {
-      alert('تعذر فتح المشاركة');
-      console.error(e);
-    }
-  }
-}
+`.trim();
 </script>
 
 
